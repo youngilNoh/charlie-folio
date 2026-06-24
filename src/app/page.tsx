@@ -1,31 +1,31 @@
-import { Button } from "@/components/ui/button"
+import { ResumeHeader } from "@/components/resume/ResumeHeader"
+import { ResumeSidebar } from "@/components/resume/ResumeSidebar"
+import { ResumeMain } from "@/components/resume/ResumeMain"
+import { ScrollTracking } from "@/components/resume/ScrollTracking"
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-8 max-w-4xl mx-auto text-gray-800">
-      <h1 className="text-3xl font-bold">Charlie Noh</h1>
-      <p className="mt-2 text-gray-600">
-        Frontend Developer | React, Next.js, Tailwind CSS | Passionate about
-        building beautiful and performant web applications.
-      </p>
+    <div className="min-h-screen bg-page py-6 px-4">
+      <a href="#content" className="skip-link">
+        Skip to content
+      </a>
+      <ScrollTracking />
 
-      <section
-        id="about-section"
-        className="mt-12 p-6 bg-slate-50 border border-slate-200 rounded-lg"
-      >
-        <h2 className="text-xl font-semibold">About Me</h2>
-        <p className="mt-2 text-sm">About Me Information</p>
-      </section>
+      <div className="max-w-4xl mx-auto">
+        <ResumeHeader />
 
-      <section
-        id="projects-section"
-        className="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-lg"
-      >
-        <h2 className="text-xl font-semibold">Projects</h2>
-        <div className="mt-4">
-          <Button variant="default">Project A</Button>
+        <div className="flex flex-col md:flex-row shadow-2xl rounded-xl overflow-hidden bg-card">
+          {/* Sidebar — full width on mobile, fixed column from md up */}
+          <div className="w-full md:w-64 shrink-0">
+            <ResumeSidebar />
+          </div>
+
+          {/* Main content */}
+          <main className="flex-1 min-w-0">
+            <ResumeMain />
+          </main>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   )
 }

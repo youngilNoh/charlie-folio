@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local tooling / editor config (preview server, local Claude settings)
+.claude/
+
+# internal docs — architecture report, not part of the deployed site
+/docs/
