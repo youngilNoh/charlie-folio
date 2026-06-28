@@ -4,6 +4,7 @@ export interface Personal {
   location: string
   email: string
   phone: string
+  salary: string
   photoSrc: string
 }
 
@@ -27,10 +28,11 @@ export interface Experience {
   logoSrc?: string
   role: string
   period: string
-  duration: string
+  /** Optional — omit for a just-started / ongoing role with no meaningful length yet. */
+  duration?: string
   /**
    * Bullet text verbatim from the source résumé. Wrap emphasized spans in
-   * `**...**` (markdown-style bold) — rendered as emphasis by <EmphasizedText>.
+   * `**...**` (markdown-style bold) and links as `[label](url)` — rendered by <EmphasizedText>.
    */
   highlights: string[]
   stack: string[]
@@ -63,6 +65,7 @@ export interface Resume {
   /** Core strengths emphasized as chips under the summary. */
   focus: string[]
   skills: SkillGroup[]
+  interests: string[]
   experience: Experience[]
   projects: Project[]
   education: Education[]
@@ -75,6 +78,7 @@ export const RESUME: Resume = {
     location: "Melbourne, VIC",
     email: "yesimnoh@gmail.com",
     phone: "0455-177-015",
+    salary: "$ Negotiable",
     photoSrc: "/images/profile.png",
   },
   links: {
@@ -97,7 +101,15 @@ export const RESUME: Resume = {
   skills: [
     {
       category: "Languages & Frameworks",
-      items: ["TypeScript", "JavaScript", "React", "Vue", "Next.js", "Nuxt", "Node.js"],
+      items: [
+        "TypeScript",
+        "JavaScript",
+        "React",
+        "Vue",
+        "Next.js",
+        "Nuxt",
+        "Node.js",
+      ],
     },
     {
       category: "Documentation",
@@ -116,6 +128,7 @@ export const RESUME: Resume = {
       items: ["AI Agents", "Claude Code", "AI-driven Workflow"],
     },
   ],
+  interests: ["AI", "Chess", "Problem Solving", "Poker", "Crossfit", "Coffee"],
   experience: [
     {
       id: "nsus-group",
@@ -146,7 +159,26 @@ export const RESUME: Resume = {
         "Drove **Data-Informed & Usability Enhancements**: Integrated **A/B testing environments** using Hackle and GrowthBook, and developed internal admin keyboard shortcuts, increasing operational processing speed by 30%.",
         "Led Frontend **Performance Optimization**: Designed an Intersection **Observer-based lazy-loading** strategy for image-heavy product listing pages, reducing initial resource usage from **120MB to 9.6MB** and improving first-page load time from approximately **30s to 5.5s**.",
       ],
-      stack: ["React", "Next.js", "TypeScript", "WebSocket", "GrowthBook", "Hackle"],
+      stack: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "WebSocket",
+        "GrowthBook",
+        "Hackle",
+      ],
+    },
+    {
+      id: "baketico",
+      company: "BakeTico",
+      logoSrc: "/images/logos/baketico.png",
+      role: "Barista – All Rounder",
+      period: "Jun 2026 – Present",
+      highlights: [
+        "Prepare a wide range of high-quality coffee, deliver excellent customer service, and keep the workspace clean and organized throughout each shift.",
+        "Built **an onboarding page** to streamline new-staff onboarding — [Baketico Memory](https://btmemory.yesimnoh.workers.dev).",
+      ],
+      stack: [],
     },
   ],
   projects: [
@@ -162,7 +194,14 @@ export const RESUME: Resume = {
         "Split the frontend into reusable components — overall-score card, category radar chart, price-trend chart (Recharts), and Kakao Map view — with 4 weight presets that recompute instantly on the client.",
         "Kept a type-safe client–server contract via shared types between API responses and the UI.",
       ],
-      stack: ["Next.js", "TypeScript", "React", "Supabase", "Recharts", "Kakao Map"],
+      stack: [
+        "Next.js",
+        "TypeScript",
+        "React",
+        "Supabase",
+        "Recharts",
+        "Kakao Map",
+      ],
       url: "https://realestate-valuation-engine.vercel.app/",
     },
   ],

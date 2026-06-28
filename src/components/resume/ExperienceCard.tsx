@@ -16,7 +16,9 @@ export function ExperienceCard({ experience }: { experience: Experience }) {
         </div>
         <div className="sm:text-right shrink-0">
           <p className="text-muted-foreground text-xs">{experience.period}</p>
-          <p className="text-muted-foreground/80 text-xs mt-0.5">{experience.duration}</p>
+          {experience.duration && (
+            <p className="text-muted-foreground/80 text-xs mt-0.5">{experience.duration}</p>
+          )}
         </div>
       </header>
 
@@ -33,13 +35,15 @@ export function ExperienceCard({ experience }: { experience: Experience }) {
         ))}
       </ul>
 
-      <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0" aria-label="Tech stack">
-        {experience.stack.map((tech) => (
-          <li key={tech}>
-            <SkillBadge variant="secondary">{tech}</SkillBadge>
-          </li>
-        ))}
-      </ul>
+      {experience.stack.length > 0 && (
+        <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0" aria-label="Tech stack">
+          {experience.stack.map((tech) => (
+            <li key={tech}>
+              <SkillBadge variant="secondary">{tech}</SkillBadge>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
   )
 }

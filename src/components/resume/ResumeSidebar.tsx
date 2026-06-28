@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, MapPin, Banknote } from 'lucide-react'
 import { RESUME } from '@/lib/resume-data'
 import { PhotoExperiment } from './PhotoExperiment'
 import { SectionTitle } from './SectionTitle'
@@ -10,7 +10,7 @@ const linkRowClass =
   'flex items-center gap-2.5 text-xs text-sidebar-muted hover:text-sidebar-foreground transition-colors'
 
 export function ResumeSidebar() {
-  const { personal, links, skills } = RESUME
+  const { personal, links, skills, interests } = RESUME
 
   return (
     <aside className="bg-sidebar text-sidebar-foreground px-6 pt-8 pb-10 h-full">
@@ -47,6 +47,11 @@ export function ResumeSidebar() {
               {personal.phone}
             </TrackedLink>
           </li>
+          <li className="flex items-center gap-2.5 text-xs text-sidebar-muted">
+            <Banknote aria-hidden="true" className="w-3.5 h-3.5 shrink-0 text-sidebar-label" />
+            <span className="sr-only">Salary: </span>
+            {personal.salary}
+          </li>
         </ul>
       </div>
 
@@ -76,7 +81,7 @@ export function ResumeSidebar() {
       </div>
 
       {/* Skills */}
-      <div>
+      <div className="mb-7">
         <SectionTitle variant="dark">Skills</SectionTitle>
         {skills.map((group) => (
           <div key={group.category} className="mb-5 last:mb-0">
@@ -92,6 +97,18 @@ export function ResumeSidebar() {
             </ul>
           </div>
         ))}
+      </div>
+
+      {/* Interests */}
+      <div>
+        <SectionTitle variant="dark">Interests</SectionTitle>
+        <ul className="flex flex-wrap gap-1.5 list-none p-0 m-0" aria-label="Interests">
+          {interests.map((item) => (
+            <li key={item}>
+              <SkillBadge>{item}</SkillBadge>
+            </li>
+          ))}
+        </ul>
       </div>
     </aside>
   )
