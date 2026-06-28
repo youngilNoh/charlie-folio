@@ -33,7 +33,10 @@ export function PhotoSection({ src, name }: PhotoSectionProps) {
   const showPhoto = Boolean(src) && !imgFailed
 
   return (
-    <div className="mx-auto mb-6 w-32 h-32 rounded-full overflow-hidden border-4 border-sidebar-border shadow-lg">
+    <div
+      data-identity-photo
+      className="mx-auto mb-6 w-32 h-32 rounded-full overflow-hidden border-4 border-sidebar-border shadow-lg"
+    >
       {showPhoto ? (
         <Image
           src={src as string}

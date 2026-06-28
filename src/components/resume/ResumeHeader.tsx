@@ -7,17 +7,16 @@ import { RESUME } from '@/lib/resume-data'
 import { ThemeToggle } from './ThemeToggle'
 
 export function ResumeHeader() {
-  const hasPdf = Boolean(RESUME.links.pdf)
-
   const handleWebpageClick = () => {
     track('button_click', { label: 'Webpage', href: RESUME.links.webpage })
     window.open(RESUME.links.webpage, '_blank', 'noopener,noreferrer')
   }
 
-  const handlePdfClick = () => {
-    if (!hasPdf) return
-    track('button_click', { label: 'PDF', href: RESUME.links.pdf })
-    window.open(RESUME.links.pdf, '_blank', 'noopener,noreferrer')
+  // Native print → "Save as PDF". The print stylesheet (globals.css) restyles
+  // the page into the dense 2-page résumé layout for printing.
+  const handlePrintClick = () => {
+    track('button_click', { label: 'Print to PDF' })
+    window.print()
   }
 
   return (
@@ -36,20 +35,12 @@ export function ResumeHeader() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-1.5 aria-disabled:opacity-50 aria-disabled:cursor-not-allowed"
-          onClick={handlePdfClick}
-          aria-disabled={!hasPdf}
-          aria-describedby={!hasPdf ? 'pdf-pending' : undefined}
-          data-disabled={!hasPdf ? '' : undefined}
+          className="gap-1.5"
+          onClick={handlePrintClick}
         >
           <FileText aria-hidden="true" />
           PDF
         </Button>
-        {!hasPdf && (
-          <span id="pdf-pending" className="sr-only">
-            PDF link coming soon
-          </span>
-        )}
 
         <ThemeToggle />
       </nav>

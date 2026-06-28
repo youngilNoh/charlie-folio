@@ -83,7 +83,7 @@ export const RESUME: Resume = {
   },
   links: {
     webpage: "https://charlie-folio.vercel.app/",
-    pdf: "", // TODO: Insert Google Drive share link
+    pdf: "https://drive.google.com/file/d/1dkaU_MkqL-3p3Qgi4ZEQWeAbqMEsDQsp/view?usp=sharing",
     github: "https://github.com/youngilNoh",
     medium: "https://medium.com/@yesimnoh",
     linkedin: "https://www.linkedin.com/in/youngil-noh-470992198/",

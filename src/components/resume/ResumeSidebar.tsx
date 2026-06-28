@@ -13,7 +13,10 @@ export function ResumeSidebar() {
   const { personal, links, skills, interests } = RESUME
 
   return (
-    <aside className="bg-sidebar text-sidebar-foreground px-6 pt-8 pb-10 h-full">
+    <aside
+      data-resume-identity
+      className="bg-sidebar text-sidebar-foreground px-6 pt-8 pb-10 h-full"
+    >
       {/* Photo — A/B tested (client island) */}
       <PhotoExperiment src={personal.photoSrc} name={personal.name} />
 

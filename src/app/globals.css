@@ -196,6 +196,170 @@
 }
 
 @media print {
-  .print-hidden { display: none !important; }
-  body { background: #fff; }
+  /* Print colours/backgrounds faithfully — the navy sidebar and brand chips
+     are otherwise dropped by the browser's default print behaviour. */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Always print the light theme, regardless of the on-screen toggle. */
+  .dark {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.18 0.01 264);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.18 0.01 264);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.45 0.01 264);
+    --border: oklch(0.91 0.005 264);
+    --brand: #2563eb;
+    --brand-foreground: #ffffff;
+    --brand-subtle: #eef4ff;
+    --brand-subtle-foreground: #1d4ed8;
+    --brand-border: #c5d8fb;
+    --sidebar: #1b2b5a;
+    --sidebar-foreground: #ffffff;
+    --sidebar-muted: rgb(255 255 255 / 0.85);
+    --sidebar-label: #9db8f5;
+    --sidebar-primary: #2563eb;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: rgb(255 255 255 / 0.08);
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgb(255 255 255 / 0.16);
+  }
+
+  @page {
+    margin: 8mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  /* Screen-only chrome (header actions, theme toggle, skip link). */
+  .print-hidden {
+    display: none !important;
+  }
+
+  /* ============================================================
+     LAYOUT — keep the on-screen 2-column layout (page.tsx supplies
+     print:flex-row on the shell + print:w-48 on the sidebar wrapper),
+     but render the sidebar transparent with dark text so the navy
+     panel disappears and the whole page reads as one document.
+     ============================================================ */
+  /* The shell clips with overflow-hidden on screen; unclip in print
+     so tall content paginates instead of being cut at page 1. */
+  .bg-card {
+    overflow: visible !important;
+  }
+
+  /* Re-theme the sidebar to the main column's palette: transparent
+     background, dark body text, light dividers. The navy disappears. */
+  aside[data-resume-identity] {
+    --sidebar: transparent;
+    --sidebar-foreground: var(--foreground);
+    --sidebar-muted: var(--muted-foreground);
+    --sidebar-label: var(--muted-foreground);
+    --sidebar-border: var(--border);
+    background: transparent !important;
+    height: auto !important;
+    padding: 0 6mm 0 0 !important;
+    border-right: 1px solid var(--border) !important;
+    break-inside: avoid !important;
+  }
+  /* Section labels (Contact/Links/Skills/Interests) pick up the same
+     brand colour as the main column's headings. */
+  aside[data-resume-identity] :is(h2, h3) {
+    color: var(--brand) !important;
+  }
+  /* The solid navy-era chips become the subtle chip used in the main
+     column, so all chips look identical across the document. */
+  aside[data-resume-identity] .bg-brand {
+    background: var(--brand-subtle) !important;
+    color: var(--brand-subtle-foreground) !important;
+    border: 1px solid var(--brand-border) !important;
+  }
+  /* Smaller, centred photo with a hairline border (no navy ring). */
+  aside[data-resume-identity] [data-identity-photo] {
+    width: 76px !important;
+    height: 76px !important;
+    margin: 0 auto 8px !important;
+    border-width: 1px !important;
+    box-shadow: none !important;
+  }
+  /* Tighten the sidebar's vertical rhythm so personal info ends on
+     page 1. */
+  aside[data-resume-identity] .text-center {
+    margin-bottom: 10px !important;
+  }
+  aside[data-resume-identity] .mb-7 {
+    margin-bottom: 9px !important;
+  }
+  aside[data-resume-identity] .mb-5 {
+    margin-bottom: 6px !important;
+  }
+  aside[data-resume-identity] .space-y-2\.5 > * + * {
+    margin-top: 3px !important;
+  }
+  aside[data-resume-identity] .gap-1\.5 {
+    gap: 4px !important;
+  }
+  /* Keep the sidebar's skill/interest chips compact so all personal
+     info stays on page 1 (main-column chips keep their original size). */
+  aside[data-resume-identity] .inline-flex.px-2\.5.py-1 {
+    padding: 1px 6px !important;
+  }
+
+  /* ============================================================
+     MAIN COLUMN — original on-screen type sizes and spacing; only a
+     left gutter is added to pair with the sidebar divider. Font size
+     is the single page-count knob: the clamp below is enabled only if
+     the resume would otherwise run past 2 pages.
+     ============================================================ */
+  #content {
+    padding: 0 0 0 6mm !important;
+  }
+  /* Keep a card's header with its first bullet across a page break. */
+  #content article header {
+    break-after: avoid;
+  }
+
+  /* PAGE-FIT CLAMP — largest main-content font that still fits 2 pages.
+     Found empirically by stepping down 1px at a time. */
+  #content .text-sm,
+  #content p,
+  #content li {
+    font-size: 12px !important;
+  }
+  #content .text-\[13px\] {
+    font-size: 11px !important;
+  }
+  #content .text-\[15px\] {
+    font-size: 13px !important;
+  }
+  #content .text-xs {
+    font-size: 10px !important;
+  }
+
+  /* Links: every link is a real <a>, so Chrome's PDF export keeps it
+     clickable (we never hide or zero-box an anchor). Safari/WebKit
+     strips link annotations on PDF export — print from Chrome for
+     clickable links. */
+
+  /* ============================================================
+     PAGE-BREAK HYGIENE
+     ============================================================ */
+  li {
+    break-inside: avoid;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
 }
