@@ -1,48 +1,69 @@
 import { Fragment } from "react"
+import { TrackedLink } from "./TrackedLink"
 
-interface Segment {
-  text: string
-  bold: boolean
-}
+type Segment =
+  | { type: "text"; text: string }
+  | { type: "bold"; text: string }
+  | { type: "link"; text: string; href: string }
 
-const BOLD = /\*\*([\s\S]+?)\*\*/g
+// Matches **bold** or [label](url)
+const TOKEN = /\*\*([\s\S]+?)\*\*|\[([^\]]+)\]\(([^)]+)\)/g
 
 function toSegments(text: string): Segment[] {
   const segments: Segment[] = []
   let lastIndex = 0
   let match: RegExpExecArray | null
-  const re = new RegExp(BOLD)
+  const re = new RegExp(TOKEN)
 
   while ((match = re.exec(text)) !== null) {
     if (match.index > lastIndex) {
-      segments.push({ text: text.slice(lastIndex, match.index), bold: false })
+      segments.push({ type: "text", text: text.slice(lastIndex, match.index) })
     }
-    segments.push({ text: match[1], bold: true })
+    if (match[1] !== undefined) {
+      segments.push({ type: "bold", text: match[1] })
+    } else {
+      segments.push({ type: "link", text: match[2], href: match[3] })
+    }
     lastIndex = match.index + match[0].length
   }
   if (lastIndex < text.length) {
-    segments.push({ text: text.slice(lastIndex), bold: false })
+    segments.push({ type: "text", text: text.slice(lastIndex) })
   }
   return segments
 }
 
 /**
- * Renders text verbatim, turning `**...**` spans into emphasized (bold) text.
- * Emphasis darkens + bolds the span against muted body copy, mirroring the bold
- * runs in the source résumé.
+ * Renders text verbatim with lightweight markup:
+ *  - `**...**` → emphasized (bold) span, mirroring the source résumé's bold runs
+ *  - `[label](url)` → tracked external link
  */
 export function EmphasizedText({ text }: { text: string }) {
   return (
     <>
-      {toSegments(text).map((segment, i) =>
-        segment.bold ? (
-          <strong key={i} className="font-semibold text-foreground">
-            {segment.text}
-          </strong>
-        ) : (
-          <Fragment key={i}>{segment.text}</Fragment>
-        ),
-      )}
+      {toSegments(text).map((segment, i) => {
+        if (segment.type === "bold") {
+          return (
+            <strong key={i} className="font-semibold text-foreground">
+              {segment.text}
+            </strong>
+          )
+        }
+        if (segment.type === "link") {
+          return (
+            <TrackedLink
+              key={i}
+              href={segment.href}
+              label={segment.text}
+              external
+              className="text-brand font-medium hover:underline underline-offset-2 whitespace-nowrap"
+            >
+              {segment.text}
+              <span aria-hidden="true"> ↗</span>
+            </TrackedLink>
+          )
+        }
+        return <Fragment key={i}>{segment.text}</Fragment>
+      })}
     </>
   )
 }
