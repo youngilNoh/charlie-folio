@@ -2,6 +2,7 @@ import { ResumeHeader } from "@/components/resume/ResumeHeader"
 import { ResumeSidebar } from "@/components/resume/ResumeSidebar"
 import { ResumeMain } from "@/components/resume/ResumeMain"
 import { ScrollTracking } from "@/components/resume/ScrollTracking"
+import { Analytics } from "@/components/resume/Analytics"
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         Skip to content
       </a>
       <ScrollTracking />
+      <Analytics />
 
       <div className="max-w-4xl mx-auto print:max-w-none">
         <ResumeHeader />

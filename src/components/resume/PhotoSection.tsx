@@ -45,7 +45,6 @@ export function PhotoSection({ src, name }: PhotoSectionProps) {
           height={128}
           className="object-cover w-full h-full"
           onError={() => setImgFailed(true)}
-          priority
         />
       ) : (
         <InitialsAvatar name={name} />

@@ -17,7 +17,11 @@ export type TrackEventName =
   | 'scroll_depth'
   | 'section_view'
   | 'time_on_section'
-  | 'ab_test_exposure'
+  // A/B CTR funnel: impression = a project card was seen; click = its CTA was
+  // clicked. CTR = project_click / project_impression, sliced by variant (the
+  // variant is joined server-side by GrowthBook via the shared visitor id).
+  | 'project_impression'
+  | 'project_click'
 
 export interface TrackProperties {
   [key: string]: string | number | boolean | null | undefined

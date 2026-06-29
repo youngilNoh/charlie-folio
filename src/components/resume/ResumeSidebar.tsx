@@ -1,6 +1,7 @@
 import { Mail, Phone, MapPin, Banknote } from 'lucide-react'
 import { RESUME } from '@/lib/resume-data'
-import { PhotoExperiment } from './PhotoExperiment'
+import { showProfilePhotoFlag } from '@/flags'
+import { PhotoSection } from './PhotoSection'
 import { SectionTitle } from './SectionTitle'
 import { SkillBadge } from './SkillBadge'
 import { TrackedLink } from './TrackedLink'
@@ -9,16 +10,17 @@ import { GitHubIcon, LinkedInIcon, MediumIcon } from './SocialIcons'
 const linkRowClass =
   'flex items-center gap-2.5 text-xs text-sidebar-muted hover:text-sidebar-foreground transition-colors'
 
-export function ResumeSidebar() {
+export async function ResumeSidebar() {
   const { personal, links, skills, interests } = RESUME
+  // A/B test: variant assigned SERVER-SIDE (no client flash). B hides the photo.
+  const showPhoto = await showProfilePhotoFlag()
 
   return (
     <aside
       data-resume-identity
       className="bg-sidebar text-sidebar-foreground px-6 pt-8 pb-10 h-full"
     >
-      {/* Photo — A/B tested (client island) */}
-      <PhotoExperiment src={personal.photoSrc} name={personal.name} />
+      {showPhoto && <PhotoSection src={personal.photoSrc} name={personal.name} />}
 
       {/* Name + Title */}
       <div className="text-center mb-8">
